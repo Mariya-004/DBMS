@@ -13,7 +13,7 @@ mysql> create table company(company_name varchar(20),city varchar(20),foreign ke
 emp(city));
 Query OK, 0 rows affected (0.03 sec)
 
-mysql> create table manages(emp_id varchar(5),manager_id varchar(5),foreign key(emp_id) references emp(emp_id),foreign key(manager_id) references emp(emp_id));
+mysql> create table manages(emp_id varchar(5),manager_id varchar(5),foreign key(manager_id) references emp(emp_id));
 Query OK, 0 rows affected (0.04 sec)
 
 mysql> show tables;
@@ -62,9 +62,10 @@ mysql> desc manages;
 +------------+------------+------+-----+---------+-------+
 | Field      | Type       | Null | Key | Default | Extra |
 +------------+------------+------+-----+---------+-------+
-| emp_id     | varchar(5) | YES  | MUL | NULL    |       |
-| manager_id | varchar(5) | YES  |     | NULL    |       |
+| emp_id     | varchar(5) | YES  |     | NULL    |       |
+| manager_id | varchar(5) | YES  | MUL | NULL    |       |
 +------------+------------+------+-----+---------+-------+
+
 2 rows in set (0.00 sec)
 
 mysql> alter table emp modify column emp_name varchar(20) not null;
@@ -85,8 +86,6 @@ mysql> select * from emp;
 +--------+--------------+-----------+-----------+
 5 rows in set (0.01 sec)
 
-mysql> select * from works;
-Empty set (0.00 sec)
 
 mysql> INSERT INTO works (emp_id, company_name, salary) VALUES ('E001', 'SBI', 75000.00), ('E002', 'INDIAN BANK', 68000.00), ('E003''ICICI', 72000.00),('E004', 'AxisBank', 80000.00), ('E005', 'Kotak', 69000.00);
 Query OK, 5 rows affected (0.00 sec)
