@@ -10,3 +10,203 @@ Query OK, 0 rows affected (0.03 sec)
 mysql> create table Emp(EmpNo int primary key,Name varchar(20),Job varchar(20),salary float(6),hiredDate date,Commission float(5),DepartmentNo int,foreign key (DepartmentNo) references Depart(DepartmentId));
 Query OK, 0 rows affected (0.03 sec)
 
+
+
+
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| employee           |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+5 rows in set (0.00 sec)
+
+mysql> use employee;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> show tables;
++--------------------+
+| Tables_in_employee |
++--------------------+
+| company            |
+| emp                |
+| manages            |
+| works              |
++--------------------+
+4 rows in set (0.00 sec)
+
+mysql> drop table manages;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> create database office;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> use office;
+Database changed
+mysql> use employee;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> create table manages(emp_id varchar(5),manager_id varchar(5),foreign key(manager_id) references emp(emp_id));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> desc manages;
++------------+------------+------+-----+---------+-------+
+| Field      | Type       | Null | Key | Default | Extra |
++------------+------------+------+-----+---------+-------+
+| emp_id     | varchar(5) | YES  |     | NULL    |       |
+| manager_id | varchar(5) | YES  | MUL | NULL    |       |
++------------+------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> use Employee;
+ERROR 1049 (42000): Unknown database 'Employee'
+mysql> use office;
+Database changed
+mysql> CREATE TABLE Depart (
+    ->     DepartmentID INT PRIMARY KEY,
+    ->     DepartmentName VARCHAR(50) NOT NULL,
+    ->     ManagerID INT,
+    ->     Loc VARCHAR(50),
+    ->     FOREIGN KEY (ManagerID) REFERENCES Emp(emp_no)
+    -> );
+ERROR 1824 (HY000): Failed to open the referenced table 'Emp'
+mysql> create table Depart(DepartmentId int primary key,DepartmentName varchar (20),ManagerId int ,Loc varchar(20),unique(ManagerId));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> create table Emp(EmpNo int primary key,Name varchar(20)Job varchar(20),salary float(6
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Job varchar(20),salary float(6' at line 1
+mysql> create table Emp(EmpNo int primary key,Name varchar(20)Job varchar(20),salary float(6),hiredDate date,Commission float(5),DepartmentNo int,foreign key (DepartmentNo) references Depart(DepartmentId));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Job varchar(20),salary float(6),hiredDate date,Commission float(5),DepartmentNo ' at line 1
+mysql> create table Emp(EmpNo int primary key,Name varchar(20),Job varchar(20),salary float(6),hiredDate date,Commission float(5),DepartmentNo int,foreign key (DepartmentNo) references Depart(DepartmentId));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> ^C
+mysql> desc department;
+ERROR 1146 (42S02): Table 'office.department' doesn't exist
+mysql> desc depart;
+ERROR 1146 (42S02): Table 'office.depart' doesn't exist
+mysql> desc Depart;
++----------------+-------------+------+-----+---------+-------+
+| Field          | Type        | Null | Key | Default | Extra |
++----------------+-------------+------+-----+---------+-------+
+| DepartmentId   | int         | NO   | PRI | NULL    |       |
+| DepartmentName | varchar(20) | YES  |     | NULL    |       |
+| ManagerId      | int         | YES  | UNI | NULL    |       |
+| Loc            | varchar(20) | YES  |     | NULL    |       |
++----------------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> INSERT INTO Emp (EmpNo, Name, Job, Salary, HireDate, Commission, DepartmentNo, ManagerId) VALUES
+    -> (1001, 'Alice Smith', 'Sales Rep', 60000.00, '1995-03-12', 5000.00, 1, NULL),
+    -> (1002, 'Bob Johnson', 'Stock Clerk', 30000.00, '1997-07-22', 2000.00, 2, 1001),
+    -> (1003, 'Charlie Brown', 'Manager', 90000.00, '1990-02-20', NULL, 1, NULL),
+    -> (1004, 'Diana Prince', 'IT Support', 75000.00, '1998-05-01', 3500.00, 3, 1002),
+    -> (1005, 'Ethan Hunt', 'HR Coordinator', 72000.00, '1994-06-15', 4500.00, 4, 1003);
+ERROR 1054 (42S22): Unknown column 'HireDate' in 'field list'
+mysql> desc emp;
+ERROR 1146 (42S02): Table 'office.emp' doesn't exist
+mysql> desc Emp;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| EmpNo        | int         | NO   | PRI | NULL    |       |
+| Name         | varchar(20) | YES  |     | NULL    |       |
+| Job          | varchar(20) | YES  |     | NULL    |       |
+| salary       | float       | YES  |     | NULL    |       |
+| hiredDate    | date        | YES  |     | NULL    |       |
+| Commission   | float       | YES  |     | NULL    |       |
+| DepartmentNo | int         | YES  | MUL | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+7 rows in set (0.00 sec)
+
+mysql> INSERT INTO Depart (DepartmentID, DepartmentName, ManagerID, Loc) VALUES
+    -> (1, 'Sales', 1001, 'New York'),(2, 'Marketing', 1005, 'Los Angeles'),(3, 'IT', 1002, 'Chicago'),(4, 'HR', 1003, 'San Francisco'),(5, 'Finance', 1004, 'Boston');
+Query OK, 5 rows affected (0.00 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> truncate table depart;
+ERROR 1146 (42S02): Table 'office.depart' doesn't exist
+mysql> truncate table Depart;
+ERROR 1701 (42000): Cannot truncate a table referenced in a foreign key constraint (`office`.`Emp`, CONSTRAINT `Emp_ibfk_1`)
+mysql> delete from Depart;
+Query OK, 5 rows affected (0.00 sec)
+
+mysql> INSERT INTO Depart (DepartmentID, DepartmentName, ManagerID, Loc) VALUES(1, 'Sales',NULL, 'New York'),(2, 'Marketing', 1005, 'Los Angeles'),(3, 'IT', 1002, 'Chicago'),(4, 'HR', 1003, 'San Francisco'),(5, 'Finance', 1004, 'Boston');
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO Emp (EmpNo, Name, Job, Salary, HireDate, Commission, DepartmentNo, ManagerID) VALUES
+    -> (1001, 'Alice Smith', 'Sales Manager', 60000.00, '2015-03-12', 5000.00, 1),
+    -> (1002, 'Bob Johnson', 'Marketing Specialist', 30000.00, '2017-07-22', 2000.00, 2),
+    -> (1003, 'Charlie Brown', 'IT Support', 7500.00, '2018-05-01', 3500.00, 3),
+    -> (1004, 'Diana Prince', 'HR Coordinator', 72000.00, '1994-06-15', 4500.00, 4),
+    -> (1005, 'Ethan Hunt', 'Sales Rep', 11000.00, '1996-09-15', 4000.00, 1));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 6
+mysql> INSERT INTO Emp (EmpNo, Name, Job, Salary, HireDate, Commission, DepartmentNo) VALUES(1001, 'Alice Smith', 'Sales Manager', 60000.00, '2015-03-12', 5000.00, 1),(1002, 'Bob Johnson', 'Marketing Specialist', 30000.00, '2017-07-22', 2000.00, 2),(1003, 'Charlie Brown', 'IT Support', 7500.00, '2018-05-01', 3500.00, 3),(1004, 'Diana Prince', 'HR Coordinator', 72000.00, '1994-06-15', 4500.00, 4),(1005, 'Ethan Hunt', 'Sales Rep', 11000.00, '1996-09-15', 4000.00, 1));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 1
+mysql> INSERT INTO Emp (EmpNo, Name, Job, salary , hiredDate, Commission, DepartmentNo) VALUES(1001, 'Alice Smith', 'Sales Manager', 60000.00, '2015-03-12', 5000.00, 1),(1002, 'Bob Johnson', 'Marketing Specialist', 30000.00, '2017-07-22', 2000.00, 2),(1003, 'Charlie Brown', 'IT Support', 7500.00, '2018-05-01', 3500.00, 3),(1004, 'Diana Prince', 'HR Coordinator', 72000.00, '1994-06-15', 4500.00, 4),(1005, 'Ethan Hunt', 'Sales Rep', 11000.00, '1996-09-15', 4000.00, 1));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 1
+mysql> INSERT INTO Emp (EmpNo, Name, Job, salary , hiredDate, Commission, DepartmentNo) VALUES(1001, 'Alice Smith', 'Sales Manager', 60000.00, '2015-03-12', 5000.00, 1),(1002, 'Bob Johnson', 'Marketing Specialist', 30000.00, '2017-07-22', 2000.00, 2),(1003, 'Charlie Brown', 'IT Support', 7500.00, '2018-05-01', 3500.00, 3),(1004, 'Diana Prince', 'HR Coordinator', 72000.00, '1994-06-15', 4500.00, 4),(1005, 'Ethan Hunt', 'Sales Rep', 11000.00, '1996-09-15', 4000.00, 1);
+Query OK, 5 rows affected (0.00 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> SELECT Name, Salary
+    -> FROM Emp
+    -> WHERE Salary NOT BETWEEN 5000 AND 35000;
++--------------+--------+
+| Name         | Salary |
++--------------+--------+
+| Alice Smith  |  60000 |
+| Diana Prince |  72000 |
++--------------+--------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT Name, Job, HireDate
+    -> FROM Emp
+    -> WHERE HireDate BETWEEN '1990-02-20' AND '1998-05-01'
+    -> ORDER BY HireDate ASC;
+ERROR 1054 (42S22): Unknown column 'HireDate' in 'field list'
+mysql> SELECT Name, Job, hiredDate FROM Emp WHERE hiredDate BETWEEN '1990-02-20' AND '1998-05-01' ORDER BY hiredDate ASC;
++--------------+----------------+------------+
+| Name         | Job            | hiredDate  |
++--------------+----------------+------------+
+| Diana Prince | HR Coordinator | 1994-06-15 |
+| Ethan Hunt   | Sales Rep      | 1996-09-15 |
++--------------+----------------+------------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT Name AS Employee, Salary AS Monthly_Salary
+    -> FROM Emp
+    -> WHERE Salary BETWEEN 5000 AND 12000
+    ->   AND DepartmentNo IN (2, 4);
+Empty set (0.00 sec)
+
+mysql> SELECT Name, hiredDate FROM Emp WHERE YEAR(hiredDate) = 1994;
++--------------+------------+
+| Name         | hiredDate  |
++--------------+------------+
+| Diana Prince | 1994-06-15 |
++--------------+------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT Name, Salary, Commission FROM Emp WHERE Commission IS NOT NULL ORDER BY Salary DESC, Commission DESC;
++---------------+--------+------------+
+| Name          | Salary | Commission |
++---------------+--------+------------+
+| Diana Prince  |  72000 |       4500 |
+| Alice Smith   |  60000 |       5000 |
+| Bob Johnson   |  30000 |       2000 |
+| Ethan Hunt    |  11000 |       4000 |
+| Charlie Brown |   7500 |       3500 |
++---------------+--------+------------+
+5 rows in set (0.01 sec)
