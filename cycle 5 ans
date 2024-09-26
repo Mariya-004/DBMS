@@ -14,11 +14,12 @@ Query OK, 0 rows affected (0.03 sec)
 mysql> create table Emp(EmpNo int primary key,Name varchar(20),Job varchar(20),salary float(6),hiredDate date,Commission float(5),DepartmentNo int,foreign key (DepartmentNo) references Depart(DepartmentId));
 Query OK, 0 rows affected (0.03 sec)
 
-mysql> INSERT INTO Depart (DepartmentID, DepartmentName, ManagerID, Loc) VALUES (1, 'Sales', 1001, 'New York'),(2, 'HR', 1003, 'Boston'),(3, 'Finance', 1005, 'Chicago'),(4, 'IT', 1007, 'Sannb Francisco'),(5, 'Marketing', 1009, 'Los Angeles');
+mysql> INSERT INTO Depart (DepartmentID, DepartmentName, ManagerID, Loc) VALUES (1, 'Sales', 1001, 'New York'),(2, 'HR', 1003, 'Boston'),(3, 'Finance', 1005, 'Chicago'),(4, 'IT', 1007, 'Sannb Francisco'),(5, 'Marketing', NULL, 'Los Angeles');
 Query OK, 5 rows affected (0.01 sec)
 Records: 5  Duplicates: 0  Warnings: 0
 
-mysql> SELECT * FROM Depart;
+
+mysql> select * from depart;
 +--------------+----------------+-----------+-----------------+
 | DepartmentId | DepartmentName | ManagerId | Loc             |
 +--------------+----------------+-----------+-----------------+
@@ -26,29 +27,40 @@ mysql> SELECT * FROM Depart;
 |            2 | HR             |      1003 | Boston          |
 |            3 | Finance        |      1005 | Chicago         |
 |            4 | IT             |      1007 | Sannb Francisco |
-|            5 | Marketing      |      1009 | Los Angeles     |
+|            5 | Marketing      |      NULL | Los Angeles     |
 +--------------+----------------+-----------+-----------------+
 5 rows in set (0.00 sec)
 
-mysql> INSERT INTO Emp (Emp_no, Emp_name, Job, Salary, HiredDate, Comm, DepNo) VALUES (1001, 'John', 'Manager', 60000, '1990-03-15', NULL, 1), (1002, 'Amit', 'Sales Representative', 8000, '1995-02-25', 500, 1),(1003, 'Susan', 'HR Manager', 45000, '1994-05-10', NULL, 2), (1004, 'Mike', 'Stock Clerk', 5500, '1993-07-19', NULL, 4), (1005, 'David', 'Accountant', 10000, '1991-12-20', NULL, 3),(1006, 'Jill', 'Sales Representative', 7000, '1992-11-15', 100, 1),(1007, 'Emily', 'IT Specialist', 12000, '1994-01-15', NULL, 4), (1008, 'Chris', 'Marketing Analyst', 5000, '1997-03-12', NULL, 5),(1009, 'Jacob', 'Marketing Manager', 9000, '1996-06-05', NULL, 5);
+
+mysql> INSERT INTO Emp (Emp_no, Emp_name, Job, Salary, HiredDate, Comm, DepNo) VALUES (1001, 'John', 'Manager', 60000, '1990-03-15', 750, 1), (1002, 'Amit', 'Sales Representative', 8000, '1995-02-25', 500, 1),(1003, 'Susan', 'HR Manager', 45000, '1994-05-10', NULL, 2), (1004, 'Mike', 'Stock Clerk', 5500, '1993-07-19', 3000, 4), (1005, 'David', 'Accountant', 10000, '1991-12-20', NULL, 3),(1006, 'Jill', 'Sales Representative', 7000, '1992-11-15', 100, 1),(1007, 'Emily', 'IT Specialist', 12000, '1994-01-15', 1000, 4), (1008, 'Chris', 'Marketing Analyst', 5000, '1997-03-12', NULL, 5),(1009, 'Jacob', 'Marketing', 9000, '1996-06-05', 800, 5);
 Query OK, 9 rows affected (0.02 sec)
 Records: 9  Duplicates: 0  Warnings: 0
 
-mysql> SELECT * FROM Emp;
+mysql> select * from emp;
 +--------+----------+----------------------+--------+------------+------+-------+
 | Emp_no | Emp_name | Job                  | Salary | HiredDate  | Comm | DepNo |
 +--------+----------+----------------------+--------+------------+------+-------+
-|   1001 | John     | Manager              |  60000 | 1990-03-15 | NULL |     1 |
+|   1001 | John     | Manager              |  60000 | 1990-03-15 |  750 |     1 |
 |   1002 | Amit     | Sales Representative |   8000 | 1995-02-25 |  500 |     1 |
 |   1003 | Susan    | HR Manager           |  45000 | 1994-05-10 | NULL |     2 |
-|   1004 | Mike     | Stock Clerk          |   5500 | 1993-07-19 | NULL |     4 |
+|   1004 | Mike     | Stock Clerk          |   5500 | 1993-07-19 | 3000 |     4 |
 |   1005 | David    | Accountant           |  10000 | 1991-12-20 | NULL |     3 |
 |   1006 | Jill     | Sales Representative |   7000 | 1992-11-15 |  100 |     1 |
-|   1007 | Emily    | IT Specialist        |  12000 | 1994-01-15 | NULL |     4 |
+|   1007 | Emily    | IT Specialist        |  12000 | 1994-01-15 | 1000 |     4 |
 |   1008 | Chris    | Marketing Analyst    |   5000 | 1997-03-12 | NULL |     5 |
-|   1009 | Jacob    | Marketing Manager    |   9000 | 1996-06-05 | NULL |     5 |
+|   1009 | Jacob    | Marketing            |   9000 | 1996-06-05 |  800 |     5 |
 +--------+----------+----------------------+--------+------------+------+-------+
 9 rows in set (0.00 sec)
+
+
+mysql> select Emp_name,Salary from emp where Salary not between 5000 and 35000;
++----------+--------+
+| Emp_name | Salary |
++----------+--------+
+| John     |  60000 |
+| Susan    |  45000 |
++----------+--------+
+2 rows in set (0.00 sec)
 
 mysql> SELECT Emp_name,Job,Emp_no FROM Emp WHERE HiredDate between '1990-02-20' AND '1998-05-01' ORDER BY HiredDate;
 +----------+----------------------+--------+
@@ -65,3 +77,44 @@ mysql> SELECT Emp_name,Job,Emp_no FROM Emp WHERE HiredDate between '1990-02-20' 
 | Chris    | Marketing Analyst    |   1008 |
 +----------+----------------------+--------+
 9 rows in set (0.00 sec)
+
+mysql> select Emp_name as 'Employee',Salary as 'Monthly_Salary' from emp where Salary between 5000 and 12000 and DepNo=2 or DepNo=4;
++----------+----------------+
+| Employee | Monthly_Salary |
++----------+----------------+
+| Mike     |           5500 |
+| Emily    |          12000 |
++----------+----------------+
+2 rows in set (0.00 sec)
+
+mysql> select Emp_name,HiredDate from emp where year(HiredDate)='1994';
++----------+------------+
+| Emp_name | HiredDate  |
++----------+------------+
+| Susan    | 1994-05-10 |
+| Emily    | 1994-01-15 |
++----------+------------+
+2 rows in set (0.01 sec)
+
+mysql> select Emp_name,Salary,Comm from emp where Comm is not NULL order by Salary DESC,COMM DESC;
++----------+--------+------+
+| Emp_name | Salary | Comm |
++----------+--------+------+
+| John     |  60000 |  750 |
+| Emily    |  12000 | 1000 |
+| Jacob    |   9000 |  800 |
+| Amit     |   8000 |  500 |
+| Jill     |   7000 |  100 |
+| Mike     |   5500 | 3000 |
++----------+--------+------+
+6 rows in set (0.00 sec)
+
+mysql> select Emp_name,Job from emp,depart where emp.DepNo=depart.DepartmentId and ManagerId is NULL;
++----------+-------------------+
+| Emp_name | Job               |
++----------+-------------------+
+| Chris    | Marketing Analyst |
+| Jacob    | Marketing         |
++----------+-------------------+
+2 rows in set (0.00 sec)
+
