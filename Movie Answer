@@ -1,0 +1,143 @@
+mysql> create database Movie;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> use Movie;
+Database changed
+mysql> create table ACTOR(Act_id int primary key,Act_name varchar(20),Act_Gender char (1));
+Query OK, 0 rows affected (0.02 sec)
+mysql> create table Director(Dir_id int primary key,Dir_name varchar(20),Dir_phone int(10));
+Query OK, 0 rows affected, 1 warning (0.01 sec)
+
+mysql> create table MOVIES(Mov_id int primary key,Mov_title varchar(20),Mov_year int,Mov_lang varchar(20),Dir_id int,foreign key (Dir_id) references DIRECTOR(Dir_id));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> create table MOVIE_CAST(Act_id int,Mov_id int,Role varchar(20),foreign key(Act_id) references ACTOR(Act_id),foreign key(Mov_id) references MOVIES(Mov_id));
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> create table RATING(Mov_id int,Rev_stars int,foreign key(Mov_id) references MOVIES(Mov_id));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> INSERT INTO ACTOR (Act_id, Act_name, Act_Gender) VALUES
+    -> (1, 'John Doe', 'M'),
+    -> (2, 'Jane Smith', 'F'),
+    -> (3, 'Michael Johnson', 'M'),
+    -> (4, 'Emily Davis', 'F'),
+    -> (5, 'Robert Brown', 'M');
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO DIRECTOR (Dir_id, Dir_name, Dir_phone) VALUES
+    -> (1, 'Steven Spielberg',123456789),
+    -> (2, 'Christopher Nolan',987654321),
+    -> (3, 'Alfred Hitchcock',111222333),
+    -> (4, 'Martin Scorsese',444555666);
+Query OK, 4 rows affected (0.00 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO MOVIES (Mov_id, Mov_title, Mov_year, Mov_lang, Dir_id) VALUES
+    -> (1, 'Inception', 2010, 'English', 2),
+    -> (2, 'Jurassic Park', 1993, 'English', 1),
+    -> (3, 'Psycho', 1960, 'English', 3),
+    -> (4, 'The Aviator', 2004, 'English', 4),
+    -> (5, 'Vertigo', 1958, 'English', 3),
+    -> (6, 'War Horse', 2011, 'English', 1);
+Query OK, 6 rows affected (0.01 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO MOVIE_CAST (Act_id, Mov_id, Role) VALUES
+    -> (1, 1, 'Protagonist'),
+    -> (2, 1, 'Supporting'),
+    -> (3, 1, 'Antagonist'),
+    -> (4, 2, 'Lead'),
+    -> (1, 2, 'Supporting'),
+    -> (5, 2, 'Minor Role'),
+    -> (2, 3, 'Lead'),
+    -> (4, 3, 'Supporting'),
+    -> (1, 4, 'Cameo'),
+    -> (3, 5, 'Lead'),
+    -> (2, 5, 'Supporting'),
+    -> (1, 6, 'Lead');
+Query OK, 12 rows affected (0.01 sec)
+Records: 12  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO RATING (Mov_id, Rev_stars) VALUES
+    -> (1, 5),
+    -> (1, 4),
+    -> (2, 3),
+    -> (2, 5),
+    -> (3, 4),
+    -> (4, 5),
+    -> (5, 5),
+    -> (6, 2);
+Query OK, 8 rows affected (0.00 sec)
+Records: 8  Duplicates: 0  Warnings: 0
+
+mysql> select Mov_title from MOVIES where Dir_id in(select Dir_id from DIRECTOR where Dir_name='Alfred Hitchcock');
++-----------+
+| Mov_title |
++-----------+
+| Psycho    |
+| Vertigo   |
++-----------+
+2 rows in set (0.00 sec)
+*******
+mysql> SELECT DISTINCT MOVIES.Mov_title FROM MOVIES JOIN MOVIE_CAST ON MOVIES.Mov_id = MOVIE_CAST.Mov_id WHERE MOVIE_CAST.Act_id IN (SELECT Act_id FROM MOVIE_CAST GROUP BY Act_id HAVING COUNT(DISTINCT Mov_id) >= 2);
++---------------+
+| Mov_title     |
++---------------+
+| Inception     |
+| Jurassic Park |
+| Psycho        |
+| The Aviator   |
+| Vertigo       |
+| War Horse     |
++---------------+
+6 rows in set (0.01 sec)
+***********
+
+mysql> select Act_name from ACTOR,MOVIE_CAST,MOVIES where ACTOR.Act_id=MOVIE_CAST.Act_id and MOVIES.Mov_id=MOVIE_CAST.Mov_id and MOVIES.Mov_year not between 2000 and 2015;
++-----------------+
+| Act_name        |
++-----------------+
+| John Doe        |
+| Jane Smith      |
+| Jane Smith      |
+| Michael Johnson |
+| Emily Davis     |
+| Emily Davis     |
+| Robert Brown    |
++-----------------+
+7 rows in set (0.00 sec)
+
+mysql> update RATING set Rev_stars=5 where Mov_id in(select Mov_id from MOVIES where Dir_id in(select Dir_id from DIRECTOR where Dir_name='Steven Spielberg'));
+Query OK, 3 rows affected (0.01 sec)
+Rows matched: 3  Changed: 3  Warnings: 0
+
+mysql> select * from RATING;
++--------+-----------+
+| Mov_id | Rev_stars |
++--------+-----------+
+|      1 |         5 |
+|      1 |         4 |
+|      2 |         5 |
+|      2 |         5 |
+|      3 |         4 |
+|      4 |         5 |
+|      5 |         5 |
+|      6 |         5 |
++--------+-----------+
+8 rows in set (0.00 sec)
+
+
+mysql> select Mov_title,max(Rev_stars) from MOVIES inner join RATING using (Mov_id) Group by Mov_title having max(Rev_stars)>0 order by Mov_title;
++---------------+----------------+
+| Mov_title     | max(Rev_stars) |
++---------------+----------------+
+| Inception     |              5 |
+| Jurassic Park |              5 |
+| Psycho        |              4 |
+| The Aviator   |              5 |
+| Vertigo       |              5 |
+| War Horse     |              5 |
++---------------+----------------+
+6 rows in set (0.00 sec)
