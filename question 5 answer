@@ -149,6 +149,50 @@ mysql> select Emp_name from emp where Emp_name like '__a%';
 mysql> select Emp_name from emp where Emp_name like '%ana%' and  Emp_name like'%e%';
 Empty set (0.00 sec)
 
+mysql> select Emp_name,Job,Salary from emp where (Job='Sales Representative' or Job='Stock Clerk') and Salary not in(20000,4000,7000);
++----------+----------------------+--------+
+| Emp_name | Job                  | Salary |
++----------+----------------------+--------+
+| Amit     | Sales Representative |   8000 |
+| Mike     | Stock Clerk          |   5500 |
++----------+----------------------+--------+
+2 rows in set (0.00 sec)
+
+mysql> select Emp_name,DepNo,DepartmentName from emp,depart where depart.DepartmentId=emp.DepNo;
++----------+-------+----------------+
+| Emp_name | DepNo | DepartmentName |
++----------+-------+----------------+
+| John     |     1 | Sales          |
+| Amit     |     1 | Sales          |
+| Jill     |     1 | Sales          |
+| Susan    |     2 | HR             |
+| David    |     3 | Finance        |
+| Suanne   |     3 | Finance        |
+| Mike     |     4 | IT             |
+| Emily    |     4 | IT             |
+| Chris    |     5 | Marketing      |
+| Jacob    |     5 | Marketing      |
++----------+-------+----------------+
+10 rows in set (0.00 sec)
+
+mysql> select Emp_no,Emp_name from emp where DepNo in(select DepNo from emp where Emp_name like '%u%');
++--------+----------+
+| Emp_no | Emp_name |
++--------+----------+
+|   1003 | Susan    |
+|   1005 | David    |
+|   1010 | Suanne   |
++--------+----------+
+3 rows in set (0.00 sec)
+
+mysql> select Emp_name,HiredDate from emp where (Emp_name!='John' and DepNo in(select DepNo from emp where Emp_name='Amit'));
++----------+------------+
+| Emp_name | HiredDate  |
++----------+------------+
+| Amit     | 1995-02-25 |
+| Jill     | 1992-11-15 |
++----------+------------+
+2 rows in set (0.00 sec)
 
 
 
