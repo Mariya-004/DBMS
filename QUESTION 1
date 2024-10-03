@@ -1,0 +1,139 @@
+mysql> CREATE DATABASE student;
+Query OK, 1 row affected (0.02 sec)
+mysql> USE student;
+Database changed
+mysql> CREATE TABLE STUDENT (Student_id int primary key, Name varchar(20), Department varchar(20), Mark_1 float, Mark_2 float, CGPA float); Query OK, 0 rows affected (0.04 sec)
+mysql> CREATE TABLE hostel_details(Stud_Id int primary key, Stud_Name varchar (20), block char(1), Room_No int); Query OK, 0 rows affected (0.03 sec)
+mysql> DESC STUDENT;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| Student_id | int         | NO   | PRI | NULL    |       |
+| Name       | varchar(20) | YES  |     | NULL    |       |
+| Department | varchar(20) | YES  |     | NULL    |       |
+| Mark_1     | float       | YES  |     | NULL    |       |
+| Mark_2     | float       | YES  |     | NULL    |       |
+| CGPA       | float       | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+6 rows in set (0.01 sec)
+mysql> DESC hostel_details;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| Stud_Id   | int         | NO   | PRI | NULL    |       |
+| Stud_Name | varchar(20) | YES  |     | NULL    |       |
+| block     | char(1)     | YES  |     | NULL    |       |
+| Room_No   | int         | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+mysql> INSERT INTO STUDENT (Student_id, Name, Department, Mark_1, Mark_2, CGPA) VALUES (101, "Anu", "CS", 80, 90,8.5), (102, "Divya", "EEE", 90,93,9.15), (103, "Cassey", "C S",60,80,7),(104, "John", "IT", 80, 50, 6.5), (105, "Peter", "EC",70,80,7.5); Query OK, 5 rows affected (0.01 sec)
+Records: 5 Duplicates: 0 Warnings: 0
+
+mysql> INSERT INTO hostel_details (Stud_Id, Stud_Name, block, Room_No) VALUES (101, "Anu", 'A',101), (102, "Divya", 'A',101), (103, "Cassey", 'A',103), (104, "John", 'B' 108), (105, "Peter", 'B',108); Query OK, 5 rows affected (0.02 sec)
+Records: 5 Duplicates: 0 Warnings: 0
++------------+--------+------------+--------+--------+------+
+| Student_id | Name   | Department | Mark_1 | Mark_2 | CGPA |
++------------+--------+------------+--------+--------+------+
+|        101 | Anu    | CS         |     80 |     90 |  8.5 |
+|        102 | Divya  | EEE        |     90 |     93 | 9.15 |
+|        103 | Cassey | CS         |     60 |     80 | 8.10 |
+|        104 | John   | IT         |     80 |     50 |  6.5 |
+|        105 | Peter  | EC         |     70 |     80 |  7.5 |
++------------+--------+------------+--------+--------+------+
+5 rows in set (0.02 sec)
+mysql> SELECT * FROM hostel_details;
++---------+-----------+-------+---------+
+| Stud_Id | Stud_Name | block | Room_No |
++---------+-----------+-------+---------+
+|     101 | Anu       | A     |     101 |
+|     102 | Divya     | A     |     101 |
+|     103 | Cassey    | A     |     103 |
++---------+-----------+-------+---------+
+3 rows in set (0.01 sec)
+mysql> RENAME TABLE hostel_details to hostel; Query OK, 0 rows affected (0.01 sec)
+mysql> show tables;
++-------------------+
+| Tables_in_student |
++-------------------+
+| hostel            |
+| student           |
++-------------------+
+2 rows in set (0.00 sec)
+
+mysql> UPDATE STUDENT SET CGPA=8 WHERE Student_id=103;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1 Changed: 1 Warnings: 0
+mysql> SELECT * FROM STUDENT;
++------------+--------+------------+--------+--------+------+
+| Student_id | Name   | Department | Mark_1 | Mark_2 | CGPA |
++------------+--------+------------+--------+--------+------+
+|        101 | Anu    | CS         |     80 |     90 |  8.5 |
+|        102 | Divya  | EEE        |     90 |     93 | 9.15 |
+|        103 | Cassey | CS         |     60 |     80 |    8 |
+|        104 | John   | IT         |     80 |     50 |  6.5 |
+|        105 | Peter  | EC         |     70 |     80 |  7.5 |
++------------+--------+------------+--------+--------+------+
+5 rows in set (0.02 sec)
+mysql> SELECT * FROM STUDENT WHERE CGPA>8;
++------------+-------+------------+--------+--------+------+
+| Student_id | Name  | Department | Mark_1 | Mark_2 | CGPA |
++------------+-------+------------+--------+--------+------+
+|        101 | Anu   | CS         |     80 |     90 |  8.5 |
+|        102 | Divya | EEE        |     90 |     93 | 9.15 |
++------------+-------+------------+--------+--------+------+
+2 rows in set (0.01 sec)
+mysql> SELECT * FROM hostel WHERE block='A';
++---------+-----------+-------+---------+
+| Stud_Id | Stud_Name | block | Room_No |
++---------+-----------+-------+---------+
+|     101 | Anu       | A     |     101 |
+|     102 | Divya     | A     |     101 |
+|     103 | Cassey    | A     |     103 |
++---------+-----------+-------+---------+
+3 rows in set (0.00 sec)
+mysql> SELECT * FROM STUDENT WHERE Department="CS";
++------------+--------+------------+--------+--------+------+
+| Student_id | Name   | Department | Mark_1 | Mark_2 | CGPA |
++------------+--------+------------+--------+--------+------+
+|        101 | Anu    | EC         |     80 |     90 |  8.5 |
+|        103 | Cassey | CS         |     60 |     80 |    8 |
++------------+--------+------------+--------+--------+------+
+mysql> DELETE FROM hostel WHERE Room_No=108; Query OK, 2 rows affected (0.01 sec)
+mysql> SELECT * FROM hostel;
++-
+| Stud_Id | Stud_Name | block | Room_No |
+101 | Anu
+A
+102 | Divya
+A
+101 | 101 |
+103❘ Cassey
+ΤΑ
+103
+3 rows in set (0.00 sec)
+mysql> UPDATE STUDENT SET Department="EC" WHERE Name="Anu"; Query OK, 1 row affected (0.01 sec)
+Rows matched: 1 Changed: 1 Warnings: 0
+mysql> SELECT * FROM STUDENT;
++-
+| Student_id | Name Department | Mark_1 | Mark_2 | CGPA
+101 | Anu
+| EC
+80 |
+90 | 8.5 |
+102 Divya | EEE
+90
+93 | 9.15 |
+103 Cassey | CS
+60
+80 |
+8 |
+104 | John
+❘IT
+80 |
+50
+6.5
+105 Peter | EC
+70 |
+80 |
+7.5 |
+5 rows in set (0.00 sec)
