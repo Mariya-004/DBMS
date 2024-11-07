@@ -1,0 +1,20 @@
+LAB CYCLE-2
+1. Implementation of triggers *
+Create the following tables:
+Event(event_id,name,desc,city)
+Participant(player_id,name,event_id,gender,year)
+Prizes(prize_id,money,event_id,rank,year)
+Winners(prize_id,player_id)
+Write a trigger to make sure that for every new event create 3 prizes are created in prize
+table( 1st prize-1500,2nd prize-1000,3rd-500)
+2. NOSQL DATABASE*
+CRUD Operations implementation
+ Familiarization of mongo db
+ Creation
+ Read
+ Update
+ Delete
+
+3. Database design project
+
+
