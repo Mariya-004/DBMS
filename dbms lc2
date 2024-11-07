@@ -18,3 +18,4 @@ CRUD Operations implementation
 3. Database design project
 
 
+create table Prizes(Prize_id int primary key, Money float(8,2), Event_id int, Prize_rank int, Year int, foreign key(Event_id) references Event(Event_id));
