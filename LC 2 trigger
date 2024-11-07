@@ -6,8 +6,45 @@ Database changed
 mysql> create table Event(Event_id int primary key,Name varchar(100),Description varchar(100),city varchar(50));
 Query OK, 0 rows affected (0.02 sec)
 
-mysql> create table Participant(Player_id int primary key, Name varchar(100), Event_id int,Gender char(1),Year int, foreign key (Event_id) references Event(Event_id));
+mysql> create table Participant(Player_id int primary key, Name varchar(100), Event_id int,Gender char(1),Year year, foreign key (Event_id) references Event(Event_id));
 Query OK, 0 rows affected (0.03 sec)
 
 mysql> create table Prizes(Prize_id int primary key, Money float(8,2), Event_id int, Prize_rank int, Year int, foreign key(Event_id) references Event(Event_id));
 Query OK, 0 rows affected, 1 warning (0.02 sec)
+
+mysql> create table Winners(Prize_id int primary key,Player_id int,foreign key(Prize_id) references Prizes(Prize_id), foreign key (Player_id) references Participant(Player_id));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> Delimiter $$ create Trigger afterInsert after insert on Event for each row begin Insert the 1st prize (1500)INSERT INTO Prizes (Prize_id,Money, Event_id, Prize_rank, Year) VALUES (NEW.Prize_id,1500.00, NEW.Event_id, 1, YEAR(CURDATE())); Insert the 2nd prize (1000) INSERT INTO Prizes (Prize_id,Money, Event_id, Prize_rank, Year) VALUES (NEW.Prize_id,1000.00, NEW.Event_id, 2, YEAR(CURDATE()));INSERT INTO Prizes (Prize_id,Money, Event_id, Prize_rank, Year)   VALUES (NEW.Prize_id,500.00, NEW.Event_id, 3, YEAR(CURDATE())); END$$ DELIMITER;
+mysql> INSERT INTO Event (Event_id, Name, Description, city) VALUES (1, 'Sports Championship', 'An annual championship event featuring multiple sports.', 'New York'),(2, 'Music Concert', 'A large music concert with multiple performances.', 'Los Angeles'),(3, 'Tech Conference', 'A tech conference featuring workshops and seminars.', 'San Francisco');
+    -> delimiter;
+    -> end $$;
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+ysql> select * from Event;
++----------+---------------------+---------------------------------------------------------+---------------+
+| Event_id | Name                | Description                                             | city          |
++----------+---------------------+---------------------------------------------------------+---------------+
+|        1 | Sports Championship | An annual championship event featuring multiple sports. | New York      |
+|        2 | Music Concert       | A large music concert with multiple performances.       | Los Angeles   |
+|        3 | Tech Conference     | A tech conference featuring workshops and seminars.     | San Francisco |
++----------+---------------------+---------------------------------------------------------+---------------+
+3 rows in set (0.00 sec)
+
+mysql> INSERT INTO Participant (Player_id, Name, Event_id, Gender, Year)VALUES (1, 'Alice Smith', 1, 'F', 2024), (2, 'Bob Johnson', 1, 'M', 2024), (3, 'Charlie Brown', 1, 'M', 2024),(4, 'Diana Green', 2, 'F', 2024),(5, 'Eve White', 2, 'F', 2024),(6, 'Frank Black', 3, 'M', 2024);
+Query OK, 6 rows affected (0.00 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+mysql> select * from Participant;
++-----------+---------------+----------+--------+------+
+| Player_id | Name          | Event_id | Gender | Year |
++-----------+---------------+----------+--------+------+
+|         1 | Alice Smith   |        1 | F      | 2024 |
+|         2 | Bob Johnson   |        1 | M      | 2024 |
+|         3 | Charlie Brown |        1 | M      | 2024 |
+|         4 | Diana Green   |        2 | F      | 2024 |
+|         5 | Eve White     |        2 | F      | 2024 |
+|         6 | Frank Black   |        3 | M      | 2024 |
++-----------+---------------+----------+--------+------+
+6 rows in set (0.00 sec)
