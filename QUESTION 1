@@ -31,6 +31,7 @@ Records: 5 Duplicates: 0 Warnings: 0
 
 mysql> INSERT INTO hostel_details (Stud_Id, Stud_Name, block, Room_No) VALUES (101, "Anu", 'A',101), (102, "Divya", 'A',101), (103, "Cassey", 'A',103), (104, "John", 'B' 108), (105, "Peter", 'B',108); Query OK, 5 rows affected (0.02 sec)
 Records: 5 Duplicates: 0 Warnings: 0
+mysql> SELECT * FROM STUDENT;
 +------------+--------+------------+--------+--------+------+
 | Student_id | Name   | Department | Mark_1 | Mark_2 | CGPA |
 +------------+--------+------------+--------+--------+------+
@@ -95,7 +96,7 @@ mysql> SELECT * FROM STUDENT WHERE Department="CS";
 +------------+--------+------------+--------+--------+------+
 | Student_id | Name   | Department | Mark_1 | Mark_2 | CGPA |
 +------------+--------+------------+--------+--------+------+
-|        101 | Anu    | EC         |     80 |     90 |  8.5 |
+|        101 | Anu    | CS         |     80 |     90 |  8.5 |
 |        103 | Cassey | CS         |     60 |     80 |    8 |
 +------------+--------+------------+--------+--------+------+
 mysql> DELETE FROM hostel WHERE Room_No=108; 
