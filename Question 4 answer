@@ -96,7 +96,8 @@ mysql> select count(distinct Student_branch) from student;
 1 row in set (0.01 sec)
 
 
-mysql> select Faculty_name,Subject_name from Faculty,Subject where Faculty.Faculty_code=Subject.Faculty_code;
+mysql> select Faculty_name,Subject_name from Faculty,Subject 
+where Faculty.Faculty_code=Subject.Faculty_code;
 +---------------+--------------+
 | Faculty_name  | Subject_name |
 +---------------+--------------+
@@ -110,7 +111,9 @@ mysql> select Faculty_name,Subject_name from Faculty,Subject where Faculty.Facul
 
 
 
-mysql> select Faculty.Faculty_name from Faculty where Faculty.Faculty_code in (select Faculty_code from Subject group by Faculty_code having count(Subject_code) > 1);
+mysql> select Faculty.Faculty_name from Faculty where 
+Faculty.Faculty_code in (select Faculty_code from Subject
+group by Faculty_code having count(Subject_code) > 1);
 Empty set (0.00 sec)
 
 mysql> select Subject_name,Max_marks from Subject order by Max_marks;
