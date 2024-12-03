@@ -53,7 +53,8 @@ mysql> select * from emp;
 9 rows in set (0.00 sec)
 
 
-mysql> select Emp_name,Salary from emp where Salary not between 5000 and 35000;
+mysql> select Emp_name,Salary from emp where Salary not
+between 5000 and 35000;
 +----------+--------+
 | Emp_name | Salary |
 +----------+--------+
@@ -62,7 +63,8 @@ mysql> select Emp_name,Salary from emp where Salary not between 5000 and 35000;
 +----------+--------+
 2 rows in set (0.00 sec)
 
-mysql> SELECT Emp_name,Job,Emp_no FROM Emp WHERE HiredDate between '1990-02-20' AND '1998-05-01' ORDER BY HiredDate;
+mysql> SELECT Emp_name,Job,Emp_no FROM Emp WHERE HiredDate between 
+'1990-02-20' AND '1998-05-01' ORDER BY HiredDate;
 +----------+----------------------+--------+
 | Emp_name | Job                  | Emp_no |
 +----------+----------------------+--------+
@@ -78,7 +80,9 @@ mysql> SELECT Emp_name,Job,Emp_no FROM Emp WHERE HiredDate between '1990-02-20' 
 +----------+----------------------+--------+
 9 rows in set (0.00 sec)
 
-mysql> select Emp_name as 'Employee',Salary as 'Monthly_Salary' from emp where Salary between 5000 and 12000 and DepNo=2 or DepNo=4;
+mysql> select Emp_name as 'Employee',Salary as 
+'Monthly_Salary' from emp where Salary between
+5000 and 12000 and DepNo=2 or DepNo=4;
 +----------+----------------+
 | Employee | Monthly_Salary |
 +----------+----------------+
@@ -87,7 +91,8 @@ mysql> select Emp_name as 'Employee',Salary as 'Monthly_Salary' from emp where S
 +----------+----------------+
 2 rows in set (0.00 sec)
 
-mysql> select Emp_name,HiredDate from emp where year(HiredDate)='1994';
+mysql> select Emp_name,HiredDate from emp where
+year(HiredDate)='1994';
 +----------+------------+
 | Emp_name | HiredDate  |
 +----------+------------+
@@ -96,7 +101,8 @@ mysql> select Emp_name,HiredDate from emp where year(HiredDate)='1994';
 +----------+------------+
 2 rows in set (0.01 sec)
 
-mysql> select Emp_name,Salary,Comm from emp where Comm is not NULL order by Salary DESC,COMM DESC;
+mysql> select Emp_name,Salary,Comm from emp where Comm 
+is not NULL order by Salary DESC,COMM DESC;
 +----------+--------+------+
 | Emp_name | Salary | Comm |
 +----------+--------+------+
@@ -109,7 +115,8 @@ mysql> select Emp_name,Salary,Comm from emp where Comm is not NULL order by Sala
 +----------+--------+------+
 6 rows in set (0.00 sec)
 
-mysql> select Emp_name,Job from emp,depart where emp.DepNo=depart.DepartmentId and ManagerId is NULL;
+mysql> select Emp_name,Job from emp,depart where
+emp.DepNo=depart.DepartmentId and ManagerId is NULL;
 +----------+-------------------+
 | Emp_name | Job               |
 +----------+-------------------+
@@ -138,7 +145,8 @@ mysql> select * from emp;
 +--------+----------+----------------------+--------+------------+------+-------+
 10 rows in set (0.00 sec)
 
-mysql> select Emp_name from emp where Emp_name like '__a%';
+mysql> select Emp_name from emp where 
+Emp_name like '__a%';
 +----------+
 | Emp_name |
 +----------+
@@ -146,10 +154,13 @@ mysql> select Emp_name from emp where Emp_name like '__a%';
 +----------+
 1 row in set (0.00 sec)
 
-mysql> select Emp_name from emp where Emp_name like '%ana%' and  Emp_name like'%e%';
+mysql> select Emp_name from emp where
+Emp_name like '%ana%' and  Emp_name like'%e%';
 Empty set (0.00 sec)
 
-mysql> select Emp_name,Job,Salary from emp where (Job='Sales Representative' or Job='Stock Clerk') and Salary not in(20000,4000,7000);
+mysql> select Emp_name,Job,Salary from emp where
+(Job='Sales Representative' or Job='Stock Clerk') 
+and Salary not in(20000,4000,7000);
 +----------+----------------------+--------+
 | Emp_name | Job                  | Salary |
 +----------+----------------------+--------+
@@ -158,7 +169,8 @@ mysql> select Emp_name,Job,Salary from emp where (Job='Sales Representative' or 
 +----------+----------------------+--------+
 2 rows in set (0.00 sec)
 
-mysql> select Emp_name,DepNo,DepartmentName from emp,depart where depart.DepartmentId=emp.DepNo;
+mysql> select Emp_name,DepNo,DepartmentName from emp,
+depart where depart.DepartmentId=emp.DepNo;
 +----------+-------+----------------+
 | Emp_name | DepNo | DepartmentName |
 +----------+-------+----------------+
@@ -175,7 +187,8 @@ mysql> select Emp_name,DepNo,DepartmentName from emp,depart where depart.Departm
 +----------+-------+----------------+
 10 rows in set (0.00 sec)
 
-mysql> select Emp_no,Emp_name from emp where DepNo in(select DepNo from emp where Emp_name like '%u%');
+mysql> select Emp_no,Emp_name from emp where DepNo 
+in(select DepNo from emp where Emp_name like '%u%');
 +--------+----------+
 | Emp_no | Emp_name |
 +--------+----------+
@@ -185,7 +198,9 @@ mysql> select Emp_no,Emp_name from emp where DepNo in(select DepNo from emp wher
 +--------+----------+
 3 rows in set (0.00 sec)
 
-mysql> select Emp_name,HiredDate from emp where (Emp_name!='John' and DepNo in(select DepNo from emp where Emp_name='Amit'));
+mysql> select Emp_name,HiredDate from emp where 
+(Emp_name!='John' and DepNo in(select DepNo 
+from emp where Emp_name='Amit'));
 +----------+------------+
 | Emp_name | HiredDate  |
 +----------+------------+
