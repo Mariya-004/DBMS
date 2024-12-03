@@ -3,29 +3,9 @@ Query OK, 1 row affected (0.01 sec)
 
 mysql> use employee;
 Database changed
-mysql> create table emp(emp_id varchar(5) primary key,emp_name varchar(20),Street_No int,city varchar(20),unique(city));
+mysql> create table emp(emp_id varchar(5) primary key,emp_name varchar(20),
+Street_No int,city varchar(20),unique(city));
 Query OK, 0 rows affected (0.04 sec)
-
-mysql> create table works(emp_id varchar(5),company_name varchar(20),salary float(8),foreign key(emp_id) references emp(emp_id),unique(company_name));
-Query OK, 0 rows affected (0.03 sec)
-
-mysql> create table company(company_name varchar(20),city varchar(20),foreign key(company_name) references works(company_name),foreign key(city) references
-emp(city));
-Query OK, 0 rows affected (0.03 sec)
-
-mysql> create table manages(emp_id varchar(5),manager_id varchar(5),foreign key(manager_id) references emp(emp_id));
-Query OK, 0 rows affected (0.04 sec)
-
-mysql> show tables;
-+--------------------+
-| Tables_in_employee |
-+--------------------+
-| company            |
-| emp                |
-| manages            |
-| works              |
-+--------------------+
-4 rows in set (0.00 sec)
 
 mysql> desc emp;
 +-----------+-------------+------+-----+---------+-------+
@@ -38,6 +18,10 @@ mysql> desc emp;
 +-----------+-------------+------+-----+---------+-------+
 4 rows in set (0.01 sec)
 
+mysql> create table works(emp_id varchar(5),company_name varchar(20),salary float(8),
+foreign key(emp_id) references emp(emp_id),unique(company_name));
+Query OK, 0 rows affected (0.03 sec)
+
 mysql> desc works;
 +--------------+-------------+------+-----+---------+-------+
 | Field        | Type        | Null | Key | Default | Extra |
@@ -48,6 +32,10 @@ mysql> desc works;
 +--------------+-------------+------+-----+---------+-------+
 3 rows in set (0.00 sec)
 
+mysql> create table company(company_name varchar(20),city varchar(20),foreign key(company_name)
+references works(company_name),foreign key(city) references
+emp(city));
+Query OK, 0 rows affected (0.03 sec)
 
 mysql> desc company;
 +--------------+-------------+------+-----+---------+-------+
@@ -58,6 +46,10 @@ mysql> desc company;
 +--------------+-------------+------+-----+---------+-------+
 2 rows in set (0.00 sec)
 
+mysql> create table manages(emp_id varchar(5),manager_id varchar(5),foreign key(manager_id) 
+references emp(emp_id));
+Query OK, 0 rows affected (0.04 sec)
+
 mysql> desc manages;
 +------------+------------+------+-----+---------+-------+
 | Field      | Type       | Null | Key | Default | Extra |
@@ -65,7 +57,6 @@ mysql> desc manages;
 | emp_id     | varchar(5) | YES  |     | NULL    |       |
 | manager_id | varchar(5) | YES  | MUL | NULL    |       |
 +------------+------------+------+-----+---------+-------+
-
 2 rows in set (0.00 sec)
 
 mysql> alter table emp modify column emp_name varchar(20) not null;
@@ -80,7 +71,10 @@ mysql> desc emp;
 +-----------+-------------+------+-----+---------+-------+
 4 rows in set (0.00 sec)
 
-mysql> INSERT INTO emp (emp_id, emp_name, Street_No, city) VALUES('E001', 'Amit Sharma', 12, 'Delhi'),('E002', 'Priya Gupta', 34, 'Mumbai'),('E003', 'Rajesh Kumar', 56, 'Bangalore'),('E004', 'Anjali Patel', 78, 'Hyderabad'),('E005', 'Vikram Singh', 90, 'Chennai');
+mysql> INSERT INTO emp (emp_id, emp_name, Street_No, city) VALUES
+('E001', 'Amit Sharma', 12, 'Delhi'),('E002', 'Priya Gupta', 34, 'Mumbai'),
+('E003', 'Rajesh Kumar', 56, 'Bangalore'),('E004', 'Anjali Patel', 78, 'Hyderabad')
+,('E005', 'Vikram Singh', 90, 'Chennai');
 mysql> select * from emp;
 +--------+--------------+-----------+-----------+
 | emp_id | emp_name     | Street_No | city      |
@@ -94,7 +88,9 @@ mysql> select * from emp;
 5 rows in set (0.01 sec)
 
 
-mysql> INSERT INTO works (emp_id, company_name, salary) VALUES ('E001', 'SBI', 75000.00), ('E002', 'INDIAN BANK', 68000.00), ('E003','ICICI', 72000.00),('E004', 'AxisBank', 80000.00), ('E005', 'Kotak', 69000.00);
+mysql> INSERT INTO works (emp_id, company_name, salary) VALUES ('E001', 'SBI', 75000.00),
+('E002', 'INDIAN BANK', 68000.00), ('E003','ICICI', 72000.00),
+('E004', 'AxisBank', 80000.00), ('E005', 'Kotak', 69000.00);
 Query OK, 5 rows affected (0.00 sec)
 Records: 5  Duplicates: 0  Warnings: 0
 
@@ -108,5 +104,133 @@ mysql> select * from works;
 | E004   | AxisBank     |  80000 |
 | E005   | Kotak        |  69000 |
 +--------+--------------+--------+
+mysql> INSERT INTO company (company_name, city) VALUES ('SBI', 'Delhi'), 
+('INDIAN BANK', 'Mumbai'),('ICICI', 'Bangalore'), 
+('AxisBank', 'Hyderabad'), ('Kotak', 'Chennai');
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select * from company;
++--------------+-----------+
+| company_name | city      |
++--------------+-----------+
+| SBI          | Delhi     |
+| INDIAN BANK  | Mumbai    |
+| ICICI        | Bangalore |
+| AxisBank     | Hyderabad |
+| Kotak        | Chennai   |
++--------------+-----------+
+5 rows in set (0.00 sec)
+
+mysql> INSERT INTO manages (emp_id, manager_id) VALUES ('E001', 'E002'), ('E002', 'E003'), 
+('E003', 'E004'), ('E004', 'E005'), ('E005', 'E001');
+Query OK, 5 rows affected (0.00 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select * from manages;
++--------+------------+
+| emp_id | manager_id |
++--------+------------+
+| E001   | E002       |
+| E002   | E003       |
+| E003   | E004       |
+| E004   | E005       |
+| E005   | E001       |
++--------+------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT emp_name FROM emp, works WHERE emp.emp_id=works.emp_id and works.company_name="SBI";
++-------------+
+| emp_name    |
++-------------+
+| Amit Sharma |
++-------------+
+1 row in set (0.01 sec)
+
+mysql> SELECT emp_name FROM emp ,works, company where emp.emp_id=works.emp_id and 
+works.company_name=company.company_name and emp.city=company.city;
++--------------+
+| emp_name     |
++--------------+
+| Amit Sharma  |
+| Priya Gupta  |
+| Rajesh Kumar |
+| Anjali Patel |
+| Vikram Singh |
++--------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT e1.emp_name AS Employee, e2.emp_name AS Manager FROM manages 
+JOIN emp e1 ON manages.emp_id = e1.emp_id JOIN emp e2 ON 
+manages.manager_id = e2.emp_id WHERE e1.city = e2.city AND 
+e1.Street_No = e2.Street_No;
+Empty set (0.00 sec)
+
+mysql> SELECT emp.emp_name, works.salary FROM works JOIN emp 
+ON works.emp_id = emp.emp_id WHERE works.salary > ( SELECT AVG(salary)
+FROM works w WHERE w.company_name = works.company_name );
+Empty set (0.01 sec)
+
+mysql> SELECT works.company_name, SUM(works.salary) AS TotalSalary FROM 
+works GROUP BY works.company_name ORDER BY TotalSalary ASC LIMIT 1;
++--------------+-------------+
+| company_name | TotalSalary |
++--------------+-------------+
+| INDIAN BANK  |       68000 |
++--------------+-------------+
+1 row in set (0.01 sec)
 
 
+mysql> UPDATE works SET salary = salary * 1.10 WHERE emp_id IN 
+( SELECT manager_id FROM manages WHERE emp_id IN ( SELECT emp_id FROM
+(SELECT emp_id FROM works WHERE company_name = 'SBI') AS temp ) );
+Query OK, 1 row affected (0.02 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from works;
++--------+--------------+--------+
+| emp_id | company_name | salary |
++--------+--------------+--------+
+| E001   | SBI          |  75000 |
+| E002   | INDIAN BANK  |  74800 |
+| E003   | ICICI        |  72000 |
+| E004   | AxisBank     |  80000 |
+| E005   | Kotak        |  69000 |
++--------+--------------+--------+
+5 rows in set (0.00 sec)
+
+
+mysql> SELECT company_name, COUNT(emp_id) AS EmployeeCount FROM 
+works GROUP BY company_name ORDER BY EmployeeCount DESC;
+
++--------------+---------------+
+| company_name | EmployeeCount |
++--------------+---------------+
+| AxisBank     |             1 |
+| ICICI        |             1 |
+| INDIAN BANK  |             1 |
+| Kotak        |             1 |
+| SBI          |             1 |
++--------------+---------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT company_name FROM works GROUP BY company_name HAVING 
+AVG(salary) > ( SELECT AVG(salary) FROM works WHERE company_name = 'INDIAN BANK' );
++--------------+
+| company_name |
++--------------+
+| AxisBank     |
+| SBI          |
++--------------+
+2 rows in set (0.01 sec)
+
+mysql> SELECT emp_name, salary FROM emp JOIN works ON 
+emp.emp_id = works.emp_id WHERE salary > ALL 
+( SELECT salary FROM works WHERE company_name = 'INDIAN BANK' );
++--------------+--------+
+| emp_name     | salary |
++--------------+--------+
+| Amit Sharma  |  75000 |
+| Anjali Patel |  80000 |
++--------------+--------+
+2 rows in set (0.00 sec)
