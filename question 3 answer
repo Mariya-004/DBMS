@@ -27,7 +27,7 @@ mysql> select UPPER(Bank_Name) from Account;
 +------------------+
 | UPPER(Bank_Name) |
 +------------------+
-| STATE BANK       |
+| STATE BANK       |=
 | ICICI BANK       |
 | HDFC BANK        |
 | AXIS BANK        |
@@ -68,7 +68,7 @@ mysql> select REPLACE(Bank_Name, 'State Bank', 'State Bank Of India') from Accou
 | HDFC Bank                                               |
 | Axis Bank                                               |
 | Yes Bank                                                |
-+---------------------------------------------------------+
++---------------------------------------------------------+p
 5 rows in set (0.00 sec)
 
 
