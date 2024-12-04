@@ -6,18 +6,22 @@ Database changed
 mysql> create table Event(Event_id int primary key,Name varchar(100),Description varchar(100),city varchar(50));
 Query OK, 0 rows affected (0.03 sec)
 
-mysql>  create table Participant(Player_id int primary key, Name varchar(100), Event_id int,Gender char(1),Year year, foreign key (Event_id) references Event(Event_id));
+mysql>  create table Participant(Player_id int primary key, Name varchar(100), Event_id int,Gender char(1),Year year, 
+foreign key (Event_id) references Event(Event_id));
 Query OK, 0 rows affected (0.04 sec)
 
-mysql> create table Prizes (Prize_id int primary key auto_increment,Money float(8,2),Event_id int,Prize_rank int,Year int, foreign key (Event_id) references Event(Event_id));
+mysql> create table Prizes (Prize_id int primary key auto_increment,Money float(8,2),Event_id int,Prize_rank int,Year int, 
+foreign key (Event_id) references Event(Event_id));
 Query OK, 0 rows affected, 1 warning (0.05 sec)
 
-mysql> create table Winners(Prize_id int primary key,Player_id int,foreign key(Prize_id) references Prizes(Prize_id), foreign key (Player_id) references Participant(Player_id));
+mysql> create table Winners(Prize_id int primary key,Player_id int,foreign key(Prize_id) references 
+Prizes(Prize_id), foreign key (Player_id) references Participant(Player_id));
 Query OK, 0 rows affected (0.05 sec)
 
 mysql> delimiter //
 mysql> create trigger after_event_insert after insert on Event for each row
-begin insert into Prizes (Money, Event_id, Prize_rank, Year) values(1500.00, NEW.Event_id, 1, YEAR(CURDATE())),(1000.00, NEW.Event_id, 2, YEAR(CURDATE())),(500.00, NEW.Event_id, 3, YEAR(CURDATE()));
+begin insert into Prizes (Money, Event_id, Prize_rank, Year) values
+(1500.00, NEW.Event_id, 1, YEAR(CURDATE())),(1000.00, NEW.Event_id, 2, YEAR(CURDATE())),(500.00, NEW.Event_id, 3, YEAR(CURDATE()));
     -> end //
 Query OK, 0 rows affected (0.02 sec)
 
