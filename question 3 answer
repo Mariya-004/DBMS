@@ -27,7 +27,7 @@ mysql> select UPPER(Bank_Name) from Account;
 +------------------+
 | UPPER(Bank_Name) |
 +------------------+
-| STATE BANK       |=
+| STATE BANK       |
 | ICICI BANK       |
 | HDFC BANK        |
 | AXIS BANK        |
